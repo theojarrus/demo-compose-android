@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ComposeApp</string>
+    <string name="dashboard">Главная</string>
+    <string name="profile">Профиль</string>
+    <string name="info">Информация</string>
+    <string name="films">Популярные фильмы</string>
+    <string name="network_error">Ошибка загрузки</string>
+</resources>
