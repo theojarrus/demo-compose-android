@@ -11,7 +11,6 @@ import com.theost.composeapp.domain.network.NetworkService
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
-import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -43,7 +42,6 @@ class NetworkModule {
             .baseUrl(BASE_URL)
             .client(httpClient)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
     }
 

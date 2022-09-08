@@ -1,23 +1,28 @@
 package com.theost.composeapp.domain.data.repository
 
-import com.theost.composeapp.domain.data.entity.FilmDto
 import com.theost.composeapp.domain.data.entity.ListFilmDto
 import com.theost.composeapp.domain.data.mapper.mapToFilm
 import com.theost.composeapp.domain.data.model.Film
 import com.theost.composeapp.domain.data.model.Node
 import com.theost.composeapp.domain.network.NetworkService
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers.io
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 
-class FilmsRepository(private val networkService: NetworkService) {
+class FilmsRepository(
+    private val networkService: NetworkService,
+    private val dispatcher: CoroutineDispatcher
+) {
 
-    fun getFilm(id: Int): Single<Film> {
-        return networkService.getFilm(id).map(FilmDto::mapToFilm).subscribeOn(io())
+    suspend fun getFilm(id: Int): Film {
+        return withContext(dispatcher) {
+            networkService.getFilm(id).mapToFilm()
+        }
     }
 
-    fun getPopularFilms(page: Int): Single<Node> {
-        return networkService.getPopularFilms(page).map { response ->
+    suspend fun getPopularFilms(page: Int): Node {
+        return withContext(dispatcher) {
+            val response = networkService.getPopularFilms(page)
             Node(response.pagesCount, response.films.map(ListFilmDto::mapToFilm))
-        }.subscribeOn(io())
+        }
     }
 }
